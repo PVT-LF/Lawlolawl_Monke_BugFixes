@@ -110,7 +110,7 @@
 			BLACKBOX_LOG_FOOD_MADE(created)
 		// Re-add required reagents that were not used in this step
 		if(created_volume > ingredient_max_multiplier)
-			for(var/reagent_path as anything in required_reagents)
+			for(var/reagent_path in required_reagents)
 				holder.add_reagent(reagent_path,(required_reagents[reagent_path])*(created_volume-ingredient_max_multiplier))
 
 	// This only happens if we're being instant reacted so let's just skip to what we really want
