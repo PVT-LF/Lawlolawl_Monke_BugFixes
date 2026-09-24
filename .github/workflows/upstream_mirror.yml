@@ -12,15 +12,22 @@ jobs:
     runs-on: ubuntu-latest
     if: github.repository == 'Bastion-Station-13/Bastion-Station'
     env:
-      GH_TOKEN: ${{ secrets.MIRROR_TOKEN }}
       UPSTREAM: Monkestation/Monkestation2.0
       SINCE: "2026-09-21T00:00:00Z"
     steps:
+      - uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
       - uses: actions/checkout@v5
         with:
-          token: ${{ secrets.MIRROR_TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Mirror merged PRs
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           git config user.name "upstream-mirror-bot"
           git config user.email "upstream-mirror-bot@users.noreply.github.com"
